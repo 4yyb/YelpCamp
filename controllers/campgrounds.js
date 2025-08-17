@@ -53,7 +53,12 @@ module.exports.showCampground = async (req, res, next) => {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('/campgrounds');
     }
-    res.render('campgrounds/show', { campground, maptilerApiKey: process.env.MAPTILER_API_KEY });
+    console.log("Maptiler API Key:", process.env.MAPTILER_API_KEY);
+
+    res.render('campgrounds/show', {
+        campground,
+        maptilerApiKey: process.env.MAPTILER_API_KEY
+    });
 };
 
 module.exports.renderEditForm = async (req, res, next) => {
