@@ -18,7 +18,7 @@ module.exports.index = async (req, res) => {
             }
         }))
     };
-
+    console.log("Maptiler API Key:", process.env.MAPTILER_API_KEY);
     res.render('campgrounds/index', {
         campgrounds, // optional kalau kamu masih pakai di ejs
         geoJSON: JSON.stringify(geoJSON),
