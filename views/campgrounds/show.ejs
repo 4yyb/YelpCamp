@@ -117,10 +117,10 @@
     </div>
 
     <script>
-        console.log("Maptiler Key:", maptilerApiKey);
-        console.log("Geometry:", campground.geometry);
         const maptilerApiKey = '<%= maptilerApiKey %>';
         const campground = <%- JSON.stringify(campground) %>
+        console.log("Maptiler Key:", maptilerApiKey);
+        console.log("Geometry:", campground.geometry);
     </script>
 
     <script src="/javascripts/showPageMap.js"></script>
