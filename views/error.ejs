@@ -1,0 +1,15 @@
+<% layout('layouts/boilerplate')%>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">
+                    <%= err.message %>
+                </h4>
+                <% if (process.env.NODE_ENV !=="production" ) { %>
+                    <pre class="mb-0" style="white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto;"><%= err.stack %></pre>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
