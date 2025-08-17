@@ -21,7 +21,8 @@ module.exports.index = async (req, res) => {
 
     res.render('campgrounds/index', {
         campgrounds, // optional kalau kamu masih pakai di ejs
-        geoJSON: JSON.stringify(geoJSON)
+        geoJSON: JSON.stringify(geoJSON),
+        maptilerApiKey: process.env.MAPTILER_API_KEY
     });
 };
 
@@ -42,12 +43,12 @@ module.exports.createCampground = async (req, res) => {
 
 module.exports.showCampground = async (req, res, next) => {
     const campground = await Campground.findById(req.params.id)
-    .populate({
-        path: 'reviews',
-        populate:{
-            path:'author'
-        }
-    }).populate('author');
+        .populate({
+            path: 'reviews',
+            populate: {
+                path: 'author'
+            }
+        }).populate('author');
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('/campgrounds');
@@ -56,13 +57,13 @@ module.exports.showCampground = async (req, res, next) => {
 };
 
 module.exports.renderEditForm = async (req, res, next) => {
-    const {id} = req.params;
+    const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
         req.flash('error', 'Cannot find that campground');
         return res.redirect('/campgrounds');
     }
-    res.render('campgrounds/edit', { campground });
+    res.render('campgrounds/edit', { campground, maptilerApiKey: process.env.MAPTILER_API_KEY });
 };
 
 module.exports.updateCampground = async (req, res) => {
@@ -73,8 +74,8 @@ module.exports.updateCampground = async (req, res) => {
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     campground.images.push(...imgs);
     await campground.save();
-    if(req.body.deleteImages){
-        for(let filename of req.body.deleteImages){
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
             await cloudinary.uploader.destroy(filename);
         }
         await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
